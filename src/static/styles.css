@@ -88,17 +88,27 @@ section h3 {
   font-size: 15px;
 }
 
+
 .participants-list {
-  margin: 8px 0 0 18px;
+  margin: 8px 0 0 0;
   padding: 0;
-  list-style-type: disc;
+  list-style-type: none;
+}
+
+.participants-list.no-bullets {
+  list-style-type: none;
+  margin-left: 0;
 }
 
 .participants-list li {
   margin-bottom: 4px;
   font-size: 15px;
   color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
+
 
 .participant-email {
   background: #e3eafc;
@@ -106,6 +116,22 @@ section h3 {
   border-radius: 3px;
   font-family: monospace;
   font-size: 14px;
+}
+
+.delete-participant {
+  background: transparent;
+  border: none;
+  color: #c62828;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 6px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.delete-participant:hover {
+  background: #ffebee;
+  color: #b71c1c;
 }
 
 .no-participants {
