@@ -80,7 +80,7 @@ activities = {
     }
 }
 
-# Aktivitäten auch an das App-Objekt hängen (für Tests)
+# Attach activities to the App object (for tests)
 app.activities = activities
 
 
@@ -108,7 +108,7 @@ def signup_for_activity(activity_name: str, email: str):
     # Validate student is not already signed up
     if email in activity["participants"]:
         raise HTTPException(status_code=400, detail="Student already signed up for this activity")
-    # Prüfe, ob noch Plätze frei sind
+    # Check if spots are still available
     if len(activity["participants"]) >= activity["max_participants"]:
         raise HTTPException(status_code=400, detail="No spots available for this activity")
     # Add student
@@ -116,7 +116,7 @@ def signup_for_activity(activity_name: str, email: str):
     return {"message": f"Signed up {email} for {activity_name}"}
 
 
-# Teilnehmer aus einer Aktivität entfernen
+# Remove a participant from an activity
 @app.post("/activities/{activity_name}/unregister")
 def unregister_from_activity(activity_name: str, email: str):
     """Remove a student from an activity"""
