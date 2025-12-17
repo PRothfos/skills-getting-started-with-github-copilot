@@ -34,7 +34,7 @@ def test_signup_and_unregister():
 
 def test_signup_full_activity():
     activity = "Mathletes"
-    # Temporär alle Plätze belegen
+    # Temporarily fill all spots
     original_participants = app.activities[activity]["participants"][:]
     app.activities[activity]["participants"] = [f"user{i}@mergington.edu" for i in range(app.activities[activity]["max_participants"])]
     response = client.post(f"/activities/{activity}/signup?email=overflow@mergington.edu")
