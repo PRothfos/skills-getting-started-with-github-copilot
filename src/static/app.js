@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear loading message
       activitiesList.innerHTML = "";
 
-      // Dropdown leeren, Standardoption beibehalten
+      // Clear dropdown, keep default option
       while (activitySelect.options.length > 1) {
         activitySelect.remove(1);
       }
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
-        // Teilnehmerliste als HTML-Liste mit Delete-Icon
+        // Participant list as HTML list with delete icon
         let participantsHTML = "";
         if (details.participants.length > 0) {
           participantsHTML = `
@@ -62,41 +62,39 @@ document.addEventListener("DOMContentLoaded", () => {
           ${participantsHTML}
         `;
 
-        // Event Listener für Delete-Buttons
-        setTimeout(() => {
-          const deleteButtons = activityCard.querySelectorAll(".delete-participant");
-          deleteButtons.forEach((btn) => {
-            btn.addEventListener("click", async (e) => {
-              e.preventDefault();
-              const email = decodeURIComponent(btn.getAttribute("data-email"));
-              const activity = decodeURIComponent(btn.getAttribute("data-activity"));
-              try {
-                const response = await fetch(
-                  `/activities/${encodeURIComponent(activity)}/unregister?email=${encodeURIComponent(email)}`,
-                  { method: "POST" }
-                );
-                const result = await response.json();
-                if (response.ok) {
-                  messageDiv.textContent = result.message || "Participant removed.";
-                  messageDiv.className = "success";
-                  fetchActivities();
-                } else {
-                  messageDiv.textContent = result.detail || "An error occurred";
-                  messageDiv.className = "error";
-                }
-                messageDiv.classList.remove("hidden");
-                setTimeout(() => {
-                  messageDiv.classList.add("hidden");
-                }, 5000);
-              } catch (error) {
-                messageDiv.textContent = "Failed to remove participant. Please try again.";
+        // Event listener for delete buttons
+        const deleteButtons = activityCard.querySelectorAll(".delete-participant");
+        deleteButtons.forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const email = decodeURIComponent(btn.getAttribute("data-email"));
+            const activity = decodeURIComponent(btn.getAttribute("data-activity"));
+            try {
+              const response = await fetch(
+                `/activities/${encodeURIComponent(activity)}/unregister?email=${encodeURIComponent(email)}`,
+                { method: "POST" }
+              );
+              const result = await response.json();
+              if (response.ok) {
+                messageDiv.textContent = result.message || "Participant removed.";
+                messageDiv.className = "success";
+                fetchActivities();
+              } else {
+                messageDiv.textContent = result.detail || "An error occurred";
                 messageDiv.className = "error";
-                messageDiv.classList.remove("hidden");
-                console.error("Error removing participant:", error);
               }
-            });
+              messageDiv.classList.remove("hidden");
+              setTimeout(() => {
+                messageDiv.classList.add("hidden");
+              }, 5000);
+            } catch (error) {
+              messageDiv.textContent = "Failed to remove participant. Please try again.";
+              messageDiv.className = "error";
+              messageDiv.classList.remove("hidden");
+              console.error("Error removing participant:", error);
+            }
           });
-        }, 0);
+        });
 
         activitiesList.appendChild(activityCard);
 
